@@ -9,34 +9,34 @@ module sine(
     output logic _3b,
     output logic _49a,
     output logic _45a,
-    output logic _48b,
+    output logic _48b
 );
 
-    logic [8:0] time = 0; 
-    logic [8:0] memory [0:127];
-    logic [9:0] output;
+    logic [8:0] timef = 0; 
+    logic [9:0] memory [0:127];
+    logic [9:0] outputa;
 
     initial begin 
         $readmemh("newsine.txt", memory);
     end
 
     always_ff @(posedge clk) begin
-        time <= (time == 511)? 0 : time + 1
+        timef <= (timef == 511) ? 0 : timef + 1;
     end
 
     always_comb begin
-        if(time < 128) begin
-            output = memory[time]
-        end else if (time < 256) begin
-            output = memory[127 - (time - 128)]
-        end else if (x < 384) begin
-            output = 1024 - memory[(time - 256)]
+        if(timef < 128) begin
+            outputa = memory[timef];
+        end else if (timef < 256) begin
+            outputa = memory[127 - (timef - 128)];
+        end else if (timef < 384) begin
+            outputa = 1024 - memory[(timef - 256)];
         end else begin
-            output = 1024 - memory[127 - (time - 384)]
+            outputa = 1024 - memory[127 - (timef - 384)];
         end
     end
    
-    assign {_48b, _45a, _49a, _3b, _5a, _0a, _2a, _4a, _6a, _9b} = output;
+    assign {_48b, _45a, _49a, _3b, _5a, _0a, _2a, _4a, _6a, _9b} = outputa[9:0];
 
     
 endmodule
